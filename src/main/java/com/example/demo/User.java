@@ -2,57 +2,96 @@ package com.example.demo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "assignment")
 public class User {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-	@Column
-	private String fname;
-	
-	@Column
-	private String lname;
-	
-	@Column
-	private int age;
-	
-	@Column
-	private String occupation;
-	
-	public int getId() {
+	@Column(name = "id")
+	private Integer id;
+
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "address")
+	private String address;
+
+	@Column(name = "pincode")
+	private long pincode;
+
+	@Column(name = "state")
+	private String state;
+
+	@Column(name = "row_creation_timestamp")
+	private String row_creation_timestamp;
+
+	public User() {
+	}
+
+	public User(String name, String address, long pincode, String state, String row_creation_timestamp) {
+		this.name = name;
+		this.address = address;
+		this.pincode = pincode;
+		this.state = state;
+		this.row_creation_timestamp = row_creation_timestamp;
+	}
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getFname() {
-		return fname;
+
+	public String getName() {
+		return name;
 	}
-	public void setFname(String fname) {
-		this.fname = fname;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getLname() {
-		return lname;
+
+	public String getAddress() {
+		return address;
 	}
-	public void setLname(String lname) {
-		this.lname = lname;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public int getAge() {
-		return age;
+
+	public long getPincode() {
+		return pincode;
 	}
-	public void setAge(int age) {
-		this.age = age;
+
+	public void setPincode(long pincode) {
+		this.pincode = pincode;
 	}
-	public String getOccupation() {
-		return occupation;
+
+	public String getState() {
+		return state;
 	}
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
+
+	public void setState(String state) {
+		this.state = state;
 	}
-	
+
+	public String getRow_creation_timestamp() {
+		return row_creation_timestamp;
+	}
+
+	public void setRow_creation_timestamp(String row_creation_timestamp) {
+		this.row_creation_timestamp = row_creation_timestamp;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", name=" + name + ", address=" + address + ", pincode=" + pincode
+				+ ", state =" + state + ",row_creation_timestamp=" + row_creation_timestamp + "]";
+	}
+
 }
+

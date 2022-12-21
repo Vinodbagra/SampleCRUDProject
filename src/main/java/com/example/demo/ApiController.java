@@ -1,54 +1,51 @@
 package com.example.demo;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping("/trueclub")
 public class ApiController {
-	
-	@Autowired
-	private UserRepo userRepo;
-	
-	@GetMapping(value = "/")
-	public String getPage() {
-		return "Welcome";
-	}
-	
-	@GetMapping(value = "/users")
-	public List<User> getUsers(){
-		return userRepo.findAll();
-	}
-	
-	@PostMapping(value="/save")
-	public String saveUser(@RequestBody User user) {
-		userRepo.save(user);
-		return "Saved...";
-	}
-	
-	@PutMapping(value = "update/{id}")
-	public String updateUser(@PathVariable int id,@RequestBody User user) {
-		User updatedUser = userRepo.findById(id).get();
-		updatedUser.setFname(user.getFname());
-		updatedUser.setLname(user.getLname());
-		updatedUser.setOccupation(user.getOccupation());
-		updatedUser.setAge(user.getAge());
-		userRepo.save(updatedUser);
-		return "Updated....";
-	}
-	
-	@DeleteMapping(value="/delete/{id}")
-	public String deleteUser(@PathVariable int id) {
-		User deleteUser = userRepo.findById(id).get();
-		userRepo.delete(deleteUser);
-		return "Deleted"+id;
-	}
-	
+    @Autowired
+    UserService UserService;
+
+    @GetMapping("")
+    public List<User> list() {
+        return UserService.listAllUser();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> get(@PathVariable Integer id) {
+        try {
+            User user = UserService.getUser(id);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PostMapping("/")
+    public void add(@RequestBody User user) {
+        UserService.saveUser(user);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Integer id) {
+        try {
+            User existUser = UserService.getUser(id);
+            user.setId(id);
+            UserService.saveUser(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+
+        UserService.deleteUser(id);
+    }
 }
