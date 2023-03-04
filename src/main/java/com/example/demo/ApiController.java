@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/trueclub")
+@RequestMapping("/vender")
 public class ApiController {
     @Autowired
     UserService UserService;
 
-    @GetMapping("")
+    @GetMapping("/getuser")
     public List<User> list() {
         return UserService.listAllUser();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getuserbyid/{id}")
     public ResponseEntity<User> get(@PathVariable Integer id) {
         try {
             User user = UserService.getUser(id);
@@ -28,11 +28,11 @@ public class ApiController {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping("/")
+    @PostMapping("/adduser")
     public void add(@RequestBody User user) {
         UserService.saveUser(user);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/updatebyid/{id}")
     public ResponseEntity<?> update(@RequestBody User user, @PathVariable Integer id) {
         try {
             User existUser = UserService.getUser(id);
@@ -43,7 +43,7 @@ public class ApiController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletebyid/{id}")
     public void delete(@PathVariable Integer id) {
 
         UserService.deleteUser(id);
